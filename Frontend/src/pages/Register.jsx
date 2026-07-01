@@ -6,13 +6,18 @@ import { User, Lock, Mail, Shield } from 'lucide-react';
 const Register = () => {
   const [formData, setFormData] = useState({ username: '', email: '', password: '', role: 'student' });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try { await api.register(formData); navigate('/login'); }
+    try {
+      await api.register(formData);
+      setSuccess('Registration successful! Redirecting to login in 3 seconds...');
+      setTimeout(() => navigate('/login'), 3000);
+    }
     catch (err) { setError(err.response?.data?.error || 'Registration failed'); }
     finally { setLoading(false); }
   };
@@ -40,6 +45,9 @@ const Register = () => {
         <h2 className="text-2xl font-extrabold text-center text-gray-800 mb-1">Create Account</h2>
         <p className="text-center text-gray-400 mb-6 text-sm">Join the College Event Hub</p>
         
+        {success && (
+          <div className="rounded-xl p-3 mb-4 text-sm text-center font-medium" style={{ background: '#ecfdf5', color: '#059669', border: '1px solid #d1fae5' }}>{success}</div>
+        )}
         {error && (
           <div className="rounded-xl p-3 mb-4 text-sm text-center font-medium" style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca' }}>{error}</div>
         )}
