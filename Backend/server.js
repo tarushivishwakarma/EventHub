@@ -22,9 +22,29 @@ app.use(express.json());
 app.use(logger); 
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/eventRegistrationDB';
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.log('MongoDB connection error:', err));
+
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) {
+    return;
+  }
+  try {
+    const db = await mongoose.connect(MONGO_URI, {
+      serverSelectionTimeoutMS: 5000, // Fail faster if unable to connect
+    });
+    isConnected = db.connections[0].readyState;
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.log('MongoDB connection error:', err);
+  }
+};
+
+// Middleware to ensure DB is connected before handling any API routes
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
