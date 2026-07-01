@@ -24,13 +24,11 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
-      {/* Background image */}
       <div className="fixed inset-0 z-0" style={{
         backgroundImage: 'url(https://static.vecteezy.com/system/resources/thumbnails/052/401/656/small/dark-red-abstract-mosaic-background-photo.jpg)',
         backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
       }} />
       <div className="fixed inset-0 z-0" style={{ background: 'rgba(255,255,255,0.82)' }} />
-      {/* Orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-[1]">
         <div className="absolute rounded-full animate-float" style={{ width: 450, height: 450, top: '-10%', right: '-8%', background: 'radial-gradient(circle, rgba(245,158,11,0.1) 0%, transparent 70%)', filter: 'blur(80px)' }} />
         <div className="absolute rounded-full animate-float" style={{ width: 400, height: 400, bottom: '-15%', left: '-8%', background: 'radial-gradient(circle, rgba(236,72,153,0.1) 0%, transparent 70%)', filter: 'blur(80px)', animationDelay: '2s' }} />
