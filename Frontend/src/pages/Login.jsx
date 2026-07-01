@@ -16,184 +16,72 @@ const Login = () => {
       const { data } = await api.login(formData);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      if (data.user.role === 'admin') {
-        navigate('/admin-dashboard');
-      } else {
-        navigate('/dashboard');
-      }
-    } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
-    } finally {
-      setLoading(false);
-    }
+      if (data.user.role === 'admin') navigate('/admin-dashboard');
+      else navigate('/dashboard');
+    } catch (err) { setError(err.response?.data?.error || 'Login failed'); }
+    finally { setLoading(false); }
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: "'Inter', 'Segoe UI', sans-serif",
-      padding: '1.5rem',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 0,
-        backgroundImage: 'url(https://tse4.mm.bing.net/th/id/OIP.FBmDd8sPBXPg6jxOw78boAHaEa?pid=Api&P=0&h=180)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        filter: 'brightness(0.3) saturate(1.3)'
-      }} />
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 1,
-        background: 'linear-gradient(135deg, rgba(5,46,22,0.85) 0%, rgba(20,83,45,0.6) 50%, rgba(15,23,15,0.88) 100%)'
-      }} />
+    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
+      {/* Orbs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute rounded-full animate-float" style={{ width: 500, height: 500, top: '-15%', left: '-10%', background: 'radial-gradient(circle, rgba(236,72,153,0.1) 0%, transparent 70%)', filter: 'blur(80px)' }} />
+        <div className="absolute rounded-full animate-float" style={{ width: 400, height: 400, bottom: '-20%', right: '-10%', background: 'radial-gradient(circle, rgba(245,158,11,0.1) 0%, transparent 70%)', filter: 'blur(80px)', animationDelay: '3s' }} />
+      </div>
 
-      <div style={{
-        position: 'relative', zIndex: 2,
-        maxWidth: 440, width: '100%',
-        background: 'rgba(255,255,255,0.07)',
-        backdropFilter: 'blur(24px)',
-        WebkitBackdropFilter: 'blur(24px)',
-        padding: '2.5rem 2rem',
-        borderRadius: 24,
-        border: '1px solid rgba(255,255,255,0.12)',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05) inset'
-      }}>
-        <div style={{
-          width: 56, height: 56, borderRadius: 16,
-          background: 'linear-gradient(135deg, #22c55e, #16a34a)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          margin: '0 auto 1.25rem',
-          boxShadow: '0 8px 24px rgba(34,197,94,0.35)'
-        }}>
+      <div className="relative z-10 w-full max-w-md warm-card p-8 animate-fade-in" style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.06)' }}>
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5"
+          style={{ background: 'linear-gradient(135deg, #f59e0b, #ec4899)', boxShadow: '0 8px 24px rgba(236,72,153,0.25)' }}>
           <LogIn size={28} color="#fff" />
         </div>
 
-        <h2 style={{
-          fontSize: '1.75rem', fontWeight: 800,
-          textAlign: 'center', color: '#fff',
-          margin: '0 0 0.3rem', letterSpacing: '-0.02em'
-        }}>Welcome Back</h2>
-        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.45)', margin: '0 0 1.75rem', fontSize: '0.9rem' }}>
-          Sign in to manage your events
-        </p>
+        <h2 className="text-2xl font-extrabold text-center text-gray-800 mb-1">Welcome Back</h2>
+        <p className="text-center text-gray-400 mb-6 text-sm">Sign in to manage your events</p>
         
         {error && (
-          <div style={{
-            background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.25)',
-            color: '#f87171', padding: '0.75rem 1rem', borderRadius: 12,
-            marginBottom: '1rem', fontSize: '0.85rem', textAlign: 'center', fontWeight: 500
-          }}>{error}</div>
+          <div className="rounded-xl p-3 mb-4 text-sm text-center font-medium" style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca' }}>{error}</div>
         )}
         
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', fontWeight: 600, marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Email</label>
-            <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }}>
-                <Mail size={16} />
-              </div>
-              <input
-                type="email" required
-                placeholder="Enter your email"
+            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Email</label>
+            <div className="relative">
+              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"><Mail size={16} /></div>
+              <input type="email" required placeholder="Enter your email"
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                style={{
-                  width: '100%', padding: '0.75rem 1rem 0.75rem 2.6rem',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 12, color: '#fff', fontSize: '0.9rem',
-                  outline: 'none', boxSizing: 'border-box',
-                  transition: 'border-color 0.2s, box-shadow 0.2s'
-                }}
-                onFocus={e => { e.target.style.borderColor = 'rgba(34,197,94,0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(34,197,94,0.1)'; }}
-                onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.boxShadow = 'none'; }}
-              />
+                className="warm-input pl-10" />
             </div>
           </div>
-
           <div>
-            <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', fontWeight: 600, marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Password</label>
-            <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }}>
-                <Lock size={16} />
-              </div>
-              <input
-                type="password" required
-                placeholder="Enter your password"
+            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Password</label>
+            <div className="relative">
+              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"><Lock size={16} /></div>
+              <input type="password" required placeholder="Enter your password"
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                style={{
-                  width: '100%', padding: '0.75rem 1rem 0.75rem 2.6rem',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 12, color: '#fff', fontSize: '0.9rem',
-                  outline: 'none', boxSizing: 'border-box',
-                  transition: 'border-color 0.2s, box-shadow 0.2s'
-                }}
-                onFocus={e => { e.target.style.borderColor = 'rgba(34,197,94,0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(34,197,94,0.1)'; }}
-                onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.boxShadow = 'none'; }}
-              />
+                className="warm-input pl-10" />
             </div>
           </div>
-
           <div>
-            <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', fontWeight: 600, marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Role</label>
-            <div style={{ position: 'relative' }}>
-              <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }}>
-                <Shield size={16} />
-              </div>
-              <select
-                value={formData.role}
-                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                style={{
-                  width: '100%', padding: '0.75rem 1rem 0.75rem 2.6rem',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 12, color: '#fff', fontSize: '0.9rem',
-                  outline: 'none', boxSizing: 'border-box',
-                  appearance: 'none', cursor: 'pointer',
-                  transition: 'border-color 0.2s, box-shadow 0.2s'
-                }}
-                onFocus={e => { e.target.style.borderColor = 'rgba(34,197,94,0.5)'; e.target.style.boxShadow = '0 0 0 3px rgba(34,197,94,0.1)'; }}
-                onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.boxShadow = 'none'; }}
-              >
-                <option value="student" style={{ background: '#14532d', color: '#fff' }}>Student</option>
-                <option value="admin" style={{ background: '#14532d', color: '#fff' }}>Admin</option>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Role</label>
+            <div className="relative">
+              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"><Shield size={16} /></div>
+              <select value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                className="warm-input pl-10 appearance-none cursor-pointer">
+                <option value="student">Student</option>
+                <option value="admin">Admin</option>
               </select>
-              <div style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)', pointerEvents: 'none' }}>▾</div>
+              <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▾</div>
             </div>
           </div>
-
-          <button 
-            type="submit"
-            disabled={loading}
-            style={{
-              width: '100%', padding: '0.85rem',
-              background: 'linear-gradient(135deg, #22c55e, #16a34a)',
-              color: '#fff', border: 'none', borderRadius: 14,
-              fontWeight: 700, fontSize: '0.95rem',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.25s',
-              boxShadow: '0 6px 20px rgba(34,197,94,0.35)',
-              opacity: loading ? 0.7 : 1,
-              marginTop: '0.5rem'
-            }}
-            onMouseEnter={e => { if (!loading) e.target.style.transform = 'translateY(-1px)'; }}
-            onMouseLeave={e => e.target.style.transform = 'translateY(0)'}
-          >
+          <button type="submit" disabled={loading} className="btn-glow w-full py-3 text-sm mt-2" style={{ opacity: loading ? 0.7 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}>
             {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)', marginTop: '1.5rem' }}>
+        <p className="text-center text-sm text-gray-400 mt-6">
           Don't have an account?{' '}
-          <Link to="/register" style={{ color: '#86efac', textDecoration: 'none', fontWeight: 700, transition: 'color 0.2s' }}
-            onMouseEnter={e => e.target.style.color = '#22c55e'}
-            onMouseLeave={e => e.target.style.color = '#86efac'}
-          >Register here</Link>
+          <Link to="/register" className="text-pink-500 font-bold hover:text-pink-600 transition-colors">Register here</Link>
         </p>
       </div>
     </div>

@@ -2,16 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #fffbf5 0%, #fff5f7 50%, #fffbeb 100%);
+  background-attachment: fixed;
+  color: #1e293b;
+  min-height: 100vh;
 }
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+  background: #f9a8d4;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ec4899;
+}
+
+/* Selection */
+::selection {
+  background: rgba(236, 72, 153, 0.2);
+  color: #1e293b;
+}
+
+/* Warm card */
+@layer components {
+  .warm-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+  }
+
+  .warm-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    color: #1e293b;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .warm-input:focus {
+    border-color: #ec4899;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+  }
+
+  .warm-input::placeholder {
+    color: #94a3b8;
+  }
+
+  .btn-glow {
+    background: linear-gradient(135deg, #f59e0b, #ec4899);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.25);
+  }
+
+  .btn-glow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(236, 72, 153, 0.35);
+  }
+
+  .btn-glow:active {
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation delays */
+.anim-delay-1 { animation-delay: 0.1s; }
+.anim-delay-2 { animation-delay: 0.2s; }
+.anim-delay-3 { animation-delay: 0.3s; }
+.anim-delay-4 { animation-delay: 0.4s; }
