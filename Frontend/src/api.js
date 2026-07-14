@@ -19,6 +19,7 @@ export const updateProfile = (profileData) => API.put('/auth/profile', profileDa
 export const fetchEvents = () => API.get('/events');
 
 export const fetchMyEvents = () => API.get('/events/my');
+export const fetchStudentOfficialEvents = () => API.get('/events/official');
 
 export const createEvent = (newEvent) => API.post('/events', newEvent);
 

@@ -1,11 +1,21 @@
 const Event = require('../models/Event');
 const User = require('../models/User');
+const OfficialEvent = require('../models/OfficialEvent');
 
 exports.createEvent = async (req, res) => {
   try {
     const newEvent = new Event(req.body);
     const savedEvent = await newEvent.save();
     res.status(201).json(savedEvent);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getOfficialEvents = async (req, res) => {
+  try {
+    const events = await OfficialEvent.find().sort({ date: 1 });
+    res.status(200).json(events);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

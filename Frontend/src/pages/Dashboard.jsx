@@ -6,9 +6,11 @@ import EventForm from '../components/EventForm';
 import EventCard from '../components/EventCard';
 import * as api from '../api';
 import { useNavigate } from 'react-router-dom';
+import { Calendar } from 'lucide-react';
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
+  const [officialEvents, setOfficialEvents] = useState([]);
   const [editEvent, setEditEvent] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
@@ -22,7 +24,15 @@ const Dashboard = () => {
   }, [navigate]);
 
   const loadEvents = async () => {
-    try { setLoading(true); const res = await api.fetchMyEvents(); setEvents(res.data); }
+    try { 
+      setLoading(true); 
+      const [resMy, resOff] = await Promise.all([
+        api.fetchMyEvents(),
+        api.fetchStudentOfficialEvents()
+      ]); 
+      setEvents(resMy.data); 
+      setOfficialEvents(resOff.data);
+    }
     catch (error) { console.error('Error fetching events:', error); }
     finally { setLoading(false); }
   };
@@ -69,6 +79,25 @@ const Dashboard = () => {
         ) : (
           <>
             <StatsCards events={events} />
+            
+            {/* Official Events Section */}
+            {officialEvents.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-extrabold text-gray-800 mb-4">Official Events</h2>
+                <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+                  {officialEvents.map((ev, i) => (
+                    <div key={ev._id} className="warm-card p-5 animate-fade-in transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" style={{ animationDelay: `${i * 0.05}s`, animationFillMode: 'both' }}>
+                      <h3 className="font-bold text-pink-500 text-base mb-1">{ev.title}</h3>
+                      <p className="text-xs text-gray-400 flex items-center gap-1 mb-2">
+                        <Calendar size={13} /> {new Date(ev.date).toLocaleDateString()}
+                      </p>
+                      <p className="text-sm text-gray-500 mb-2 leading-relaxed">{ev.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <EventForm addEvent={addEvent} updateEvent={updateEvent} editEvent={editEvent} setEditEvent={setEditEvent} />
             <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} filterStatus={filterStatus} setFilterStatus={setFilterStatus} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
