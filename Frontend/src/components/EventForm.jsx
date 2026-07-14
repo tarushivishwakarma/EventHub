@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PlusCircle, Save, X } from 'lucide-react';
 
-const EventForm = ({ addEvent, updateEvent, editEvent, setEditEvent }) => {
+const EventForm = ({ addEvent, updateEvent, editEvent, setEditEvent, officialEvents = [] }) => {
   const [formData, setFormData] = useState({
     studentName: '', email: '', phone: '', eventName: '', department: '', year: '', status: 'Registered'
   });
@@ -46,12 +46,9 @@ const EventForm = ({ addEvent, updateEvent, editEvent, setEditEvent }) => {
           <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Event Name</label>
           <select name="eventName" value={formData.eventName} onChange={handleChange} required className="warm-input" style={{ cursor: 'pointer' }}>
             <option value="" disabled>Select an Event</option>
-            <option value="Tech Symposium 2026">Tech Symposium 2026</option>
-            <option value="Cultural Fest">Cultural Fest</option>
-            <option value="Annual Sports Meet">Annual Sports Meet</option>
-            <option value="Hackathon">Hackathon</option>
-            <option value="AI Workshop">AI Workshop</option>
-            <option value="Robotics Expo">Robotics Expo</option>
+            {officialEvents.map((ev) => (
+              <option key={ev._id} value={ev.title}>{ev.title}</option>
+            ))}
           </select>
         </div>
         <div>
